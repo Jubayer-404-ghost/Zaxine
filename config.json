@@ -1,0 +1,13 @@
+{
+  "prefix": "!",
+  "adminIDs": ["100012345678901"],
+  "botName": "MyBot",
+  "version": "1.0.0",
+  "language": "en",
+  "author": "Jubayer",
+  "autoRestart": true,
+  "logMessages": true,
+  "antiSpam": true,
+  "commandNotFoundMessage": "Sorry, I don't understand that command.",
+  "adminOnlyMessage": "This command is only for admins!"
+}
