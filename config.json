@@ -1,13 +1,20 @@
 {
-  "prefix": "!",
-  "adminIDs": ["100012345678901"],
-  "botName": "MyBot",
-  "version": "1.0.0",
-  "language": "en",
-  "author": "Jubayer",
-  "autoRestart": true,
-  "logMessages": true,
-  "antiSpam": true,
-  "commandNotFoundMessage": "Sorry, I don't understand that command.",
-  "adminOnlyMessage": "This command is only for admins!"
+  "BOT_NAME": "Zaxine",
+  "EMAIL": "thepagol@gmail.com",
+  "PASSWORD": "Freedom@9272",
+  "PREFIX": ".",
+  "ADMINBOT": ["100012345678901"],
+  "OPERATOR": ["100012345678901"],
+  "LANGUAGE": "en",
+  "AUTO_GREET": true,
+  "GREETING_TIMES": {
+    "MORNING": "6:00 AM",
+    "AFTERNOON": "12:00 PM",
+    "EVENING": "6:00 PM",
+    "NIGHT": "10:00 PM"
+  },
+  "REMINDER_INTERVAL": 40,
+  "CACHE_DELETE_INTERVAL": 10,
+  "AUTO_RESTART_INTERVAL": 40,
+  "ACCEPT_PENDING_INTERVAL": 10
 }
