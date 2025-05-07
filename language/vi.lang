@@ -1,0 +1,18 @@
+{
+  "botStarted": "✅ Bot Zaxine đã khởi động thành công!",
+  "commandNotFound": "❌ Không tìm thấy lệnh!",
+  "adminOnly": "❗ Lệnh này chỉ dành cho quản trị viên.",
+  "welcomeMessage": "Chào mừng, {userName}!",
+  "goodbyeMessage": "Tạm biệt, {userName}! Chúng tôi sẽ nhớ bạn.",
+  "prefixInfo": "Prefix hiện tại: {prefix}",
+  "errorOccurred": "Đã xảy ra lỗi: {error}",
+  "userNotFound": "Không tìm thấy người dùng.",
+  "missingArguments": "Thiếu đối số cho lệnh này.",
+  "noPermission": "Bạn không có quyền sử dụng lệnh này.",
+  "botRestarting": "Bot đang khởi động lại...",
+  "statusOnline": "Bot đang hoạt động!",
+  "languageSet": "Ngôn ngữ đã được đặt thành tiếng Việt.",
+  "groupOnly": "Lệnh này chỉ dùng được trong nhóm.",
+  "privateOnly": "Lệnh này chỉ dùng được trong cuộc trò chuyện riêng.",
+  "helpCommand": "Dùng {prefix}help để xem các lệnh khả dụng."
+}
