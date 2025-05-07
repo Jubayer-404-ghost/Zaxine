@@ -1,74 +1,79 @@
 const login = require("fca-unofficial");
 const fs = require("fs");
 const path = require("path");
+const vm = require("vm");
 
-// Load config and appState
 const config = JSON.parse(fs.readFileSync("config.json", "utf8"));
 const appState = require("./appstate.json");
 
-// Map for commands
+// ===== Load commands =====
 const commands = new Map();
+const cmdsPath = path.join(__dirname, "scripts", "cmds");
 
-// Load commands from /scripts/cmds/
-const cmdPath = path.join(__dirname, "scripts", "cmds");
-fs.readdirSync(cmdPath).forEach(file => {
+fs.readdirSync(cmdsPath).forEach(file => {
   if (file.endsWith(".js")) {
-    const cmd = require(path.join(cmdPath, file));
-    if (cmd.name && cmd.run) {
+    const cmd = require(path.join(cmdsPath, file));
+    if (cmd.name && typeof cmd.run === "function") {
       commands.set(cmd.name, cmd);
     }
   }
 });
 
-// Load event handlers from /scripts/events/
+// ===== Load events using runCmd only =====
 const eventHandlers = [];
-const eventPath = path.join(__dirname, "scripts", "events");
-fs.readdirSync(eventPath).forEach(file => {
-  const eventFile = require(path.join(eventPath, file));
-  if (eventFile.config && eventFile.run) {
-    eventHandlers.push(eventFile);
+const eventsPath = path.join(__dirname, "scripts", "events");
+
+fs.readdirSync(eventsPath).forEach(file => {
+  const code = fs.readFileSync(path.join(eventsPath, file), "utf8");
+  const context = { runCmd: null };
+  vm.createContext(context);
+  try {
+    vm.runInContext(code, context);
+    if (typeof context.runCmd === "function") {
+      eventHandlers.push(context.runCmd);
+    }
+  } catch (e) {
+    console.error(`Error loading event file ${file}:`, e);
   }
 });
 
-// Login with appState
+// ===== Login and Listen =====
 login({ appState }, (err, api) => {
   if (err) return console.error("Login failed:", err);
-  console.log(`${config.botName} is now online!`);
+  console.log(`${config.botName || "Zaxine"} is now online.`);
+
+  api.setOptions({ listenEvents: true });
 
   api.listenMqtt(async (err, event) => {
     if (err || !event) return;
 
-    // ========== Command Handler ==========
-    if (event.type === "message" && event.body && event.body.startsWith(config.prefix)) {
+    // === Command Handler ===
+    if (event.type === "message" && event.body?.startsWith(config.prefix)) {
       const args = event.body.slice(config.prefix.length).trim().split(/\s+/);
       const cmdName = args.shift().toLowerCase();
-
       const command = commands.get(cmdName);
-      if (!command) {
-        return api.sendMessage(config.commandNotFoundMessage, event.threadID);
-      }
 
-      // Admin-only check
+      if (!command) return api.sendMessage(config.commandNotFoundMessage || "Command not found.", event.threadID);
+
+      // Admin Check (optional)
       if (command.adminOnly && !config.adminIDs.includes(event.senderID)) {
-        return api.sendMessage(config.adminOnlyMessage, event.threadID);
+        return api.sendMessage(config.adminOnlyMessage || "Only admin can use this command.", event.threadID);
       }
 
       try {
         await command.run({ api, event, args, config });
       } catch (err) {
-        console.error(`Error in command "${cmdName}":`, err);
-        api.sendMessage("Command execution failed.", event.threadID);
+        console.error(`Error running command ${cmdName}:`, err);
+        api.sendMessage("Command execution error.", event.threadID);
       }
     }
 
-    // ========== Event Handler ==========
-    for (const handler of eventHandlers) {
-      if (handler.config.eventType.includes(event.type)) {
-        try {
-          await handler.run({ api, event, config, commands });
-        } catch (e) {
-          console.error(`Error in event "${handler.config.name}":`, e);
-        }
+    // === Event Handlers ===
+    for (const handle of eventHandlers) {
+      try {
+        await handle({ api, event, config, commands });
+      } catch (err) {
+        console.error("Error in event handler:", err);
       }
     }
   });
