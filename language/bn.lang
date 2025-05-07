@@ -1,0 +1,18 @@
+{
+  "botStarted": "✅ Zaxine বট সফলভাবে চালু হয়েছে!",
+  "commandNotFound": "❌ এই কমান্ডটি খুঁজে পাওয়া যায়নি!",
+  "adminOnly": "❗ এই কমান্ডটি শুধুমাত্র অ্যাডমিন ব্যবহার করতে পারবেন।",
+  "welcomeMessage": "স্বাগতম, {userName}!",
+  "goodbyeMessage": "বিদায়, {userName}! আপনাকে মিস করব।",
+  "prefixInfo": "বর্তমান prefix: {prefix}",
+  "errorOccurred": "একটি ত্রুটি ঘটেছে: {error}",
+  "userNotFound": "ব্যবহারকারী খুঁজে পাওয়া যায়নি।",
+  "missingArguments": "এই কমান্ডের জন্য প্রয়োজনীয় ইনপুট পাওয়া যায়নি।",
+  "noPermission": "এই কমান্ডটি ব্যবহারের অনুমতি নেই।",
+  "botRestarting": "বট রিস্টার্ট হচ্ছে...",
+  "statusOnline": "বট এখন অনলাইনে আছে!",
+  "languageSet": "ভাষা সফলভাবে বাংলা সেট হয়েছে।",
+  "groupOnly": "এই কমান্ড শুধুমাত্র গ্রুপে ব্যবহার করা যাবে।",
+  "privateOnly": "এই কমান্ড শুধুমাত্র প্রাইভেট চ্যাটে ব্যবহার করা যাবে।",
+  "helpCommand": "{prefix}help ব্যবহার করুন সকল কমান্ড দেখতে।"
+}
