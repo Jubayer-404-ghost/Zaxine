@@ -10,7 +10,7 @@
   "author": "Jubayer",
   "license": "MIT",
   "dependencies": {
-    "fca-unofficial-2": "^1.0.0",
+    "@dongdev/fca-unofficial": "^1.0.15",
     "axios": "^1.4.0",
     "chalk": "^4.1.2",
     "fs-extra": "^10.0.1",
