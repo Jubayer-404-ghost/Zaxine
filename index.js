@@ -2,49 +2,34 @@ const login = require("fca-unofficial");
 const fs = require("fs");
 const path = require("path");
 
-const config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
+const config = JSON.parse(fs.readFileSync("config.json", "utf8"));
 const appState = require("./appstate.json");
 
 const commands = new Map();
 
-// Load commands dynamically
-const commandFiles = fs.readdirSync(path.join(__dirname, "commands"));
-for (const file of commandFiles) {
+// Load commands from scripts/cmds
+const cmdFiles = fs.readdirSync(path.join(__dirname, "scripts", "cmds"));
+for (const file of cmdFiles) {
   if (file.endsWith(".js")) {
-    const command = require(`./commands/${file}`);
+    const command = require(`./scripts/cmds/${file}`);
     commands.set(command.name, command);
   }
 }
 
+// Load event handlers from scripts/events
+const eventFiles = fs.readdirSync(path.join(__dirname, "scripts", "events"));
+
 login({ appState }, (err, api) => {
   if (err) return console.error("Login failed:", err);
-  console.log(`${config.botName} is now online!`);
 
-  api.listenMqtt((err, message) => {
-    if (err || !message.body) return;
+  console.log(`${config.botName} is online!`);
 
-    const { body, senderID, threadID } = message;
-    if (!body.startsWith(config.prefix)) return;
+  api.listenMqtt(async (err, event) => {
+    if (err) return console.error("Listener error:", err);
 
-    const args = body.slice(config.prefix.length).trim().split(/\s+/);
-    const cmdName = args.shift().toLowerCase();
-
-    const command = commands.get(cmdName);
-    if (!command) {
-      return api.sendMessage(config.commandNotFoundMessage, threadID);
-    }
-
-    // Check admin-only
-    if (command.adminOnly && !config.adminIDs.includes(senderID)) {
-      return api.sendMessage(config.adminOnlyMessage, threadID);
-    }
-
-    // Run command
-    try {
-      command.run({ api, event: message, args });
-    } catch (err) {
-      console.error(`Error running command "${cmdName}":`, err);
-      api.sendMessage("An error occurred while running the command.", threadID);
+    for (const file of eventFiles) {
+      const eventHandler = require(`./scripts/events/${file}`);
+      await eventHandler({ api, event, commands, config });
     }
   });
 });
