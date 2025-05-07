@@ -1,0 +1,18 @@
+{
+  "botStarted": "✅ Zaxine bot has started successfully!",
+  "commandNotFound": "❌ Command not found!",
+  "adminOnly": "❗ This command is for admins only.",
+  "welcomeMessage": "Welcome, {userName}!",
+  "goodbyeMessage": "Goodbye, {userName}! We'll miss you.",
+  "prefixInfo": "Current prefix: {prefix}",
+  "errorOccurred": "An error occurred: {error}",
+  "userNotFound": "User not found.",
+  "missingArguments": "Missing arguments for this command.",
+  "noPermission": "You do not have permission to use this command.",
+  "botRestarting": "Bot is restarting...",
+  "statusOnline": "Bot is online and ready!",
+  "languageSet": "Language has been set to English.",
+  "groupOnly": "This command can only be used in groups.",
+  "privateOnly": "This command can only be used in private chat.",
+  "helpCommand": "Use {prefix}help to see available commands."
+}
